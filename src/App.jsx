@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const addTask = () => {
     if (input.trim()) {
       setTasks([...tasks, { text: input, completed: false }]);
-      setInput('');
+      setInput("");
     }
   };
 
   const toggleTask = (index) => {
-    const newTasks = tasks.map((task, i) => 
+    const newTasks = tasks.map((task, i) =>
       i === index ? { ...task, completed: !task.completed } : task
     );
     setTasks(newTasks);
@@ -30,20 +30,32 @@ function App() {
         <h1>To-Do List</h1>
       </header>
       <div className="input-container">
-        <input 
-          type="text" 
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Add a new task"
-        />
-        <button onClick={addTask}>Add</button>
+        <form
+          onSubmit={(e) => {
+            addTask();
+            e.preventDefault();
+          }}
+        >
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Add a new task"
+          />
+          <button type="submit">Add</button>
+        </form>
       </div>
       <ul className="task-list">
         {tasks.map((task, index) => (
-          <li key={index} className={task.completed ? 'task completed' : 'task'}>
+          <li
+            key={index}
+            className={task.completed ? "task completed" : "task"}
+          >
             <span onClick={() => toggleTask(index)}>{task.text}</span>
             <button onClick={() => deleteTask(index)}>Delete</button>
-            <button onClick={() => toggleTask(index)}>{task.completed ? "Untick" : "Tick"}</button>
+            <button onClick={() => toggleTask(index)}>
+              {task.completed ? "Untick" : "Tick"}
+            </button>
           </li>
         ))}
       </ul>
